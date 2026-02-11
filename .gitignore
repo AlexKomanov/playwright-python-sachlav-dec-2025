@@ -1,0 +1,34 @@
+# IDE
+.idea/
+
+# Virtual Environment
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Playwright
+test-results/
+playwright-report/
+downloads/
+videos/
+
+# Environment
+.env
+
+# Logs
+*.log
+
+# OS
+.DS_Store
