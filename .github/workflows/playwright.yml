@@ -32,6 +32,14 @@ jobs:
       run: python -m playwright install --with-deps
 
     - name: Run Tests
+      env:
+        OASIS_BASE_URL: ${{ secrets.OASIS_BASE_URL }}
+        OASIS_LOGIN_URL: ${{ secrets.OASIS_LOGIN_URL }}
+        GUEST_EMAIL: ${{ secrets.GUEST_EMAIL }}
+        HOST_EMAIL: ${{ secrets.HOST_EMAIL }}
+        ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+        CORRECT_PASSWORD: ${{ secrets.CORRECT_PASSWORD }}
+        INCORRECT_PASSWORD: ${{ secrets.INCORRECT_PASSWORD }}
       run: pytest -m regression
 
     - uses: actions/upload-artifact@v4
