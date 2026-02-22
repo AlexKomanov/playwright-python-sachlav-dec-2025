@@ -1,8 +1,12 @@
 import allure
 import pytest
 from allure_commons.types import Severity
+from playwright.sync_api import Page
 from pages.main_page import MainPage
-from playwright.sync_api import Page, expect
+from pages.login_page import LoginPage
+from pages.user_dashboard_page import UserDashboardPage
+from pages.property_search_page import PropertySearchPage
+from pages.checkout_page import CheckoutPage
 
 
 @allure.epic("Oasis Booking")
@@ -11,70 +15,51 @@ from playwright.sync_api import Page, expect
 @allure.title("Complete booking flow from login to payment")
 @allure.severity(Severity.BLOCKER)
 @pytest.mark.regression
-def test_example(page: Page) -> None:
+def test_complete_booking_flow(page: Page) -> None:
     main_page = MainPage(page)
+    login_page = LoginPage(page)
+    dashboard_page = UserDashboardPage(page)
+    property_search_page = PropertySearchPage(page)
+    checkout_page = CheckoutPage(page)
 
     with allure.step("Login to the application"):
-        page.goto("https://stay-oasis-booking.lovable.app/")
+        main_page.open_page()
         main_page.click_login_button()
-        page.get_by_role("textbox", name="Email").click()
-        page.get_by_role("textbox", name="Email").fill("john@example.com")
-        page.get_by_role("textbox", name="Password").click()
-        page.get_by_role("textbox", name="Password").fill("password")
-        page.get_by_role("button", name="Login").click()
+        login_page.perform_login("john@example.com", "password")
 
     with allure.step("Verify user is logged in"):
-        expect(page.get_by_test_id("user-menu-button")).to_be_visible()
-        expect(page.locator("h1")).to_contain_text("Find your next dream stay")
-        expect(page.get_by_test_id("user-menu-button")).to_contain_text("JD")
+        dashboard_page.verify_user_logged_in("JD")
 
     with allure.step("Search and select a property"):
-        page.get_by_role("button", name="Take me to the most").click()
-        expect(page.get_by_test_id("book-now-btn")).to_be_visible()
+        property_search_page.click_take_me_button()
+        property_search_page.verify_book_now_button_visible()
 
     with allure.step("Adjust guest count"):
-        page.get_by_test_id("increase-guest-btn").click()
-        expect(page.get_by_role("main")).to_contain_text("2")
+        property_search_page.increase_guest_count()
+        property_search_page.verify_guest_count("2")
 
     with allure.step("Proceed to checkout"):
-        page.get_by_test_id("book-now-btn").click()
-        expect(page.get_by_role("heading", name="Checkout")).to_be_visible()
+        property_search_page.book_now_button.click()
+        checkout_page.verify_checkout_page()
 
     with allure.step("Select facilities"):
-        page.get_by_test_id("facility-checkbox-pool").click()
-        page.get_by_test_id("facility-checkbox-gym").click()
-        page.get_by_test_id("facility-checkbox-minibar").click()
-        page.get_by_test_id("facility-spa").click()
-        page.get_by_test_id("facility-airport").click()
-        page.get_by_test_id("facilities-continue-btn").click()
+        checkout_page.select_facilities()
 
     with allure.step("Select apartment type"):
-        page.get_by_test_id("apartment-type-penthouse").click()
-        page.get_by_test_id("apartment-type-continue-btn").click()
+        checkout_page.select_apartment_type()
 
     with allure.step("Fill personal information"):
-        page.get_by_test_id("personal-info-fullname").click()
-        page.get_by_test_id("personal-info-fullname").press("ControlOrMeta+a")
-        page.get_by_test_id("personal-info-fullname").fill("Alex Komanov")
-        page.get_by_test_id("personal-info-email").click()
-        page.get_by_test_id("personal-info-email").click()
-        page.get_by_test_id("personal-info-email").dblclick()
-        page.get_by_test_id("personal-info-email").press("ControlOrMeta+a")
-        page.get_by_test_id("personal-info-email").fill("akomanovc88@gmail.com")
-        page.get_by_test_id("personal-info-phone").click()
-        page.get_by_test_id("personal-info-phone").click()
-        page.get_by_test_id("personal-info-phone").dblclick()
-        page.get_by_test_id("personal-info-phone").fill("0546998897")
-        page.get_by_test_id("personal-info-special-requests").click()
-        page.get_by_test_id("personal-info-special-requests").fill("need a quiet room")
-        page.get_by_test_id("personal-info-continue-btn").click()
+        checkout_page.fill_personal_information(
+            "Alex Komanov",
+            "akomanovc88@gmail.com",
+            "0546998897",
+            "need a quiet room"
+        )
 
     with allure.step("Apply coupon"):
-        page.get_by_role("button", name="Show available coupons").click()
-        page.get_by_text("LUXURY50").click()
-        page.get_by_role("button", name="Apply").click()
-        expect(page.locator("#applied-coupon-code")).to_contain_text("LUXURY50 applied!")
+        checkout_page.apply_coupon()
+        checkout_page.verify_coupon_applied("LUXURY50")
 
     with allure.step("Complete payment"):
-        page.get_by_test_id("pay-button").click()
-        page.goto("https://stay-oasis-booking.lovable.app/")
+        checkout_page.complete_payment()
+        main_page.open_page()
