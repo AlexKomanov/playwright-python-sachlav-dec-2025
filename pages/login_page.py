@@ -1,3 +1,4 @@
+import allure
 from playwright.sync_api import Page, Locator
 
 
@@ -12,7 +13,7 @@ class LoginPage:
         self.__login_button = page.get_by_role("button", name="Login")
         self.__error_element = page.get_by_role("alert")
 
-
+    @allure.step("Perform login with email: {email}")
     def perform_login(self, email: str, password: str) -> None:
         self.__email_textfield.fill(email)
         self.__password_textfield.fill(password)

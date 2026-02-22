@@ -1,0 +1,15 @@
+{
+  "name": "Oasis Booking - Test Report",
+  "output": "./allure-report",
+  "historyPath": "./allure-history/history.jsonl",
+  "plugins": {
+    "awesome": {
+      "options": {
+        "reportName": "Oasis Booking - Test Report",
+        "singleFile": false,
+        "reportLanguage": "en",
+        "groupBy": ["epic", "feature", "story"]
+      }
+    }
+  }
+}

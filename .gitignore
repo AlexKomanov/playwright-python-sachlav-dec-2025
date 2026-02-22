@@ -27,6 +27,11 @@ videos/
 # Environment
 .env
 
+# Allure
+allure-results/
+allure-report/
+allure-history/
+
 # Logs
 *.log
 
