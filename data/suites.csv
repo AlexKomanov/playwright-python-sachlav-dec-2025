@@ -1,4 +1,4 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","8193","Complete booking flow from login to payment","tests","2026-02-22","failed","2026-02-22","","test_end_2_end","",""
-"","2435","Verify successful login with valid credentials","tests","2026-02-22","passed","2026-02-22","","test_success_login","",""
-"","2424","Verify error message on login with invalid credentials","tests","2026-02-22","passed","2026-02-22","","test_not_successful_login","",""
+"","2418","Verify successful login with valid credentials","tests","2026-02-22","passed","2026-02-22","","test_success_login","",""
+"","2369","Verify error message on login with invalid credentials","tests","2026-02-22","passed","2026-02-22","","test_not_successful_login","",""
+"","7559","Complete booking flow from login to payment","tests","2026-02-22","passed","2026-02-22","","test_end_2_end","",""
